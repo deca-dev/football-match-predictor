@@ -7,7 +7,7 @@ export default () => ({
     port: parseInt(process.env.DATABASE_PORT || '5432', 10),
     username: process.env.DATABASE_USER || 'admin',
     password: process.env.DATABASE_PASSWORD || 'password123',
-    database: process.env.DATABASE_NAME || 'futbol_app',
+    database: process.env.DATABASE_NAME || 'football_app',
   },
   
   apis: {
