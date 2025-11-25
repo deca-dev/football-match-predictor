@@ -7,18 +7,27 @@ node_modules/
 .env
 .env.local
 .env.*.local
+backend/.env
+frontend/.env
+
 
 # Testing
 coverage/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Build outputs
 dist/
 build/
 *.tsbuildinfo
+.next/
+out/
 
 # IDEs
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
@@ -30,7 +39,19 @@ Thumbs.db
 
 # Docker
 *.log
+docker-compose.override.yml
 
 # Misc
 *.bak
 *.tmp
+.cache/
+
+# Secrets y keys
+*.pem
+*.key
+secrets/
+.secrets
+
+# Database
+*.sqlite
+*.db
