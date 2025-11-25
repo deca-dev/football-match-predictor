@@ -22,7 +22,7 @@ Aplicación Full Stack para predicción de partidos de fútbol con análisis de 
 1. Clonar repositorio:
 ```bash
 git clone <tu-repo>
-cd futbol-predictor
+cd football-predictor
 ```
 
 2. Configurar variables de entorno:
