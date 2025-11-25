@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: futbol_postgres
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-futbol_app}
+      POSTGRES_USER: ${DATABASE_USER:-admin}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - futbol_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: futbol_backend
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=${DATABASE_USER:-admin}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-password123}
+      - DATABASE_NAME=${DATABASE_NAME:-futbol_app}
+      - PORT=3000
+      - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - futbol_network
+    command: npm run start:dev
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: futbol_frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:3000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - futbol_network
+    command: npm run dev -- --host
+
+volumes:
+  postgres_data:
+
+networks:
+  futbol_network:
+    driver: bridge
