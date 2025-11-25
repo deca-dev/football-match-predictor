@@ -14,7 +14,7 @@ export class Analysis {
   @Column('jsonb')
   matchData: any; 
 
-  @Column('jsonb')
+  @Column('jsonb', { nullable: true })
   weatherData: any;
 
   @Column()
