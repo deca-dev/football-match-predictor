@@ -6,6 +6,7 @@ import { MatchesModule } from './modules/matches/matches.module';
 import { WeatherModule } from './modules/weather/weather.module';
 import { AiAnalysisModule } from './modules/ai-analysis/ai-analysis.module';
 import { DatabaseModule } from './modules/database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { DatabaseModule } from './modules/database/database.module';
     MatchesModule,
     WeatherModule,
     AiAnalysisModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
