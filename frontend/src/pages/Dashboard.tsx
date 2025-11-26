@@ -1,0 +1,309 @@
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useMatchStore } from '../store/matchStore';
+import { Header } from '../components/Header';
+
+interface FavoriteTeam {
+  id: string;
+  name: string;
+  badge: string;
+  league: string;
+}
+
+export function Dashboard() {
+  const { matches, fetchMatches, league, setLeague } = useMatchStore();
+  const [favorites, setFavorites] = useState<FavoriteTeam[]>(() => {
+    const saved = localStorage.getItem('favoriteTeams');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  // Season start date (La Liga typically starts mid-August)
+  const nextSeasonStart = new Date('2026-08-14T20:00:00');
+
+  useEffect(() => {
+    fetchMatches();
+  }, [league]);
+
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const diff = nextSeasonStart.getTime() - now.getTime();
+
+      if (diff > 0) {
+        setCountdown({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Save favorites to localStorage
+  useEffect(() => {
+    localStorage.setItem('favoriteTeams', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const addFavorite = (team: FavoriteTeam) => {
+    if (!favorites.find(f => f.name === team.name)) {
+      setFavorites([...favorites, team]);
+    }
+  };
+
+  const removeFavorite = (teamName: string) => {
+    setFavorites(favorites.filter(f => f.name !== teamName));
+  };
+
+  const isFavorite = (teamName: string) => {
+    return favorites.some(f => f.name === teamName);
+  };
+
+  // Get unique teams from matches
+  const allTeams = Array.from(
+    new Set(matches.flatMap(m => [
+      JSON.stringify({ name: m.homeTeam, badge: m.homeTeamBadge, league: m.league }),
+      JSON.stringify({ name: m.awayTeam, badge: m.awayTeamBadge, league: m.league }),
+    ]))
+  ).map(t => JSON.parse(t)).filter(t => t.name);
+
+  // Get upcoming matches for favorite teams
+  const favoriteMatches = matches.filter(m => 
+    favorites.some(f => f.name === m.homeTeam || f.name === m.awayTeam)
+  ).slice(0, 5);
+
+  // Get next match overall
+  const now = new Date();
+  const upcomingMatches = matches
+    .filter(m => new Date(m.dateEvent) > now)
+    .sort((a, b) => new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime());
+  const nextMatch = upcomingMatches[0];
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header onLoginClick={() => {}} />
+
+      <main className="container mx-auto px-4 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">🏠 Mi Dashboard</h1>
+          <p className="text-gray-600">Bienvenido de vuelta</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Countdown Card */}
+            <Card className="bg-black text-white">
+              <CardHeader>
+                <CardTitle className="text-red-500">⏳ Próxima Temporada 2026/27</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-4 gap-4 text-center">
+                  <div className="bg-gray-900 p-4 rounded-lg">
+                    <p className="text-3xl font-bold text-red-500">{countdown.days}</p>
+                    <p className="text-sm text-gray-400">Días</p>
+                  </div>
+                  <div className="bg-gray-900 p-4 rounded-lg">
+                    <p className="text-3xl font-bold text-red-500">{countdown.hours}</p>
+                    <p className="text-sm text-gray-400">Horas</p>
+                  </div>
+                  <div className="bg-gray-900 p-4 rounded-lg">
+                    <p className="text-3xl font-bold text-red-500">{countdown.minutes}</p>
+                    <p className="text-sm text-gray-400">Minutos</p>
+                  </div>
+                  <div className="bg-gray-900 p-4 rounded-lg">
+                    <p className="text-3xl font-bold text-red-500">{countdown.seconds}</p>
+                    <p className="text-sm text-gray-400">Segundos</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Next Match */}
+            {nextMatch && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>🔜 Próximo Partido</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      {nextMatch.homeTeamBadge && (
+                        <img src={nextMatch.homeTeamBadge} alt="" className="w-12 h-12" />
+                      )}
+                      <span className="font-bold">{nextMatch.homeTeam}</span>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">VS</p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(nextMatch.dateEvent).toLocaleDateString('es-ES', { 
+                          day: '2-digit', month: 'short', year: 'numeric' 
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="font-bold">{nextMatch.awayTeam}</span>
+                      {nextMatch.awayTeamBadge && (
+                        <img src={nextMatch.awayTeamBadge} alt="" className="w-12 h-12" />
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-center text-sm text-gray-500 mt-2">
+                    📍 {nextMatch.venue}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Favorite Team Matches */}
+            {favoriteMatches.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>⭐ Partidos de Mis Equipos</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {favoriteMatches.map((match) => (
+                      <div key={match.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          {match.homeTeamBadge && <img src={match.homeTeamBadge} alt="" className="w-8 h-8" />}
+                          <span className="font-medium">{match.homeTeam}</span>
+                        </div>
+                        <div className="text-center">
+                          {match.homeScore !== null ? (
+                            <span className="font-bold">{match.homeScore} - {match.awayScore}</span>
+                          ) : (
+                            <span className="text-gray-500">vs</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{match.awayTeam}</span>
+                          {match.awayTeamBadge && <img src={match.awayTeamBadge} alt="" className="w-8 h-8" />}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <p className="text-3xl font-bold text-red-500">{matches.length}</p>
+                  <p className="text-sm text-gray-500">Partidos Totales</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <p className="text-3xl font-bold text-red-500">{upcomingMatches.length}</p>
+                  <p className="text-sm text-gray-500">Por Jugar</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <p className="text-3xl font-bold text-red-500">{favorites.length}</p>
+                  <p className="text-sm text-gray-500">Equipos Favoritos</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <p className="text-3xl font-bold text-red-500">2</p>
+                  <p className="text-sm text-gray-500">Ligas Activas</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Right Column - Favorites */}
+          <div className="space-y-6">
+            {/* My Favorites */}
+            <Card>
+              <CardHeader>
+                <CardTitle>⭐ Mis Equipos Favoritos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {favorites.length === 0 ? (
+                  <p className="text-gray-500 text-sm text-center py-4">
+                    No tienes equipos favoritos aún
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {favorites.map((team) => (
+                      <div key={team.name} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          {team.badge && <img src={team.badge} alt="" className="w-8 h-8" />}
+                          <span className="font-medium text-sm">{team.name}</span>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => removeFavorite(team.name)}
+                        >
+                          ✕
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Add Favorites */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>➕ Agregar Equipo</span>
+                  <div className="flex gap-1">
+                    <Badge 
+                      className={`cursor-pointer ${league === 'spanish' ? 'bg-red-500' : 'bg-gray-300'}`}
+                      onClick={() => setLeague('spanish')}
+                    >
+                      🇪🇸
+                    </Badge>
+                    <Badge 
+                      className={`cursor-pointer ${league === 'mls' ? 'bg-red-500' : 'bg-gray-300'}`}
+                      onClick={() => setLeague('mls')}
+                    >
+                      🇺🇸
+                    </Badge>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="max-h-64 overflow-y-auto space-y-2">
+                  {allTeams.map((team) => (
+                    <div 
+                      key={team.name} 
+                      className={`flex items-center justify-between p-2 rounded-lg cursor-pointer transition ${
+                        isFavorite(team.name) ? 'bg-red-50' : 'bg-gray-50 hover:bg-gray-100'
+                      }`}
+                      onClick={() => !isFavorite(team.name) && addFavorite({ ...team, id: team.name })}
+                    >
+                      <div className="flex items-center gap-2">
+                        {team.badge && <img src={team.badge} alt="" className="w-6 h-6" />}
+                        <span className="text-sm">{team.name}</span>
+                      </div>
+                      {isFavorite(team.name) && (
+                        <span className="text-red-500">⭐</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
