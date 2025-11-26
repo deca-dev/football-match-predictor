@@ -5,6 +5,7 @@ import type { Match, Weather, Analysis } from '../services/api';
 interface MatchStore {
   matches: Match[];
   selectedMatch: Match | null;
+  matchDetails: any | null;
   weather: Weather | null;
   analysis: Analysis | null;
   loading: boolean;
@@ -22,6 +23,7 @@ interface MatchStore {
 export const useMatchStore = create<MatchStore>((set, get) => ({
   matches: [],
   selectedMatch: null,
+  matchDetails: null,
   weather: null,
   analysis: null,
   loading: false,
@@ -43,9 +45,15 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
     }
   },
 
-  selectMatch: (match) => {
-    set({ selectedMatch: match, weather: null, analysis: null });
-  },
+  selectMatch: async (match) => {
+  set({ selectedMatch: match, weather: null, analysis: null, matchDetails: null });
+  try {
+    const response = await matchesApi.getDetails(match.id);
+    set({ matchDetails: response.data });
+  } catch (error) {
+    console.error('Error fetching match details:', error);
+  }
+},
 
   fetchWeather: async (city) => {
     try {
@@ -72,6 +80,6 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
   },
 
   clearSelection: () => {
-    set({ selectedMatch: null, weather: null, analysis: null });
-  },
+  set({ selectedMatch: null, weather: null, analysis: null, matchDetails: null });
+},
 }));

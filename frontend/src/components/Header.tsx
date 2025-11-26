@@ -12,15 +12,15 @@ export function Header({ onLoginClick }: HeaderProps) {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <span className="text-2xl">⚽</span>
-            <span className="text-xl font-bold">MatchPredictor</span>
+            <span className="text-xl font-bold">Match Predictor</span>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <a href="#" className="hover:text-red-500 transition">Home</a>
-            <a href="#" className="hover:text-red-500 transition">Matches</a>
-            <a href="#" className="hover:text-red-500 transition">Predictions</a>
-            <a href="#" className="hover:text-red-500 transition">Stats</a>
+            <a href="#" className="hover:text-red-500 transition">Partidos</a>
+            <a href="#" className="hover:text-red-500 transition">Predicciones</a>
+            <a href="#" className="hover:text-red-500 transition">Estadísticas</a>
           </nav>
 
           {/* Auth Buttons */}

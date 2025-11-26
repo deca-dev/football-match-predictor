@@ -12,25 +12,25 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
   const isFinished = match.status === 'Match Finished';
 
   return (
-    <Card 
+    <Card
       className="cursor-pointer hover:shadow-lg transition-shadow"
       onClick={onClick}
     >
       <CardContent className="p-4">
         <div className="flex justify-between items-center mb-2">
           <Badge variant={isFinished ? 'secondary' : 'default'}>
-            {isFinished ? 'Finished' : 'Upcoming'}
+            {isFinished ? 'Finalizó' : 'A continuación'}
           </Badge>
           <span className="text-sm text-gray-500">
-            {matchDate.toLocaleDateString()}
+            {matchDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
           </span>
         </div>
 
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1 text-center">
             {match.homeTeamBadge && (
-              <img 
-                src={match.homeTeamBadge} 
+              <img
+                src={match.homeTeamBadge}
                 alt={match.homeTeam}
                 className="w-12 h-12 mx-auto mb-2 object-contain"
               />
@@ -50,8 +50,8 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
 
           <div className="flex-1 text-center">
             {match.awayTeamBadge && (
-              <img 
-                src={match.awayTeamBadge} 
+              <img
+                src={match.awayTeamBadge}
                 alt={match.awayTeam}
                 className="w-12 h-12 mx-auto mb-2 object-contain"
               />

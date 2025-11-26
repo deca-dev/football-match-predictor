@@ -6,7 +6,7 @@ import { GetMatchesDto, MatchResponseDto } from './dto';
 export class MatchesController {
   private readonly logger = new Logger(MatchesController.name);
 
-  constructor(private readonly matchesService: MatchesService) {}
+  constructor(private readonly matchesService: MatchesService) { }
 
   @Get()
   async findAll(@Query() query: GetMatchesDto): Promise<MatchResponseDto[]> {
@@ -18,5 +18,11 @@ export class MatchesController {
   async findOne(@Param('id') id: string): Promise<MatchResponseDto> {
     this.logger.log(`GET /matches/${id}`);
     return this.matchesService.findOne(id);
+  }
+
+  @Get(':id/details')
+  async getMatchDetails(@Param('id') id: string): Promise<any> {
+    this.logger.log(`GET /matches/${id}/details`);
+    return this.matchesService.getMatchDetails(id);
   }
 }

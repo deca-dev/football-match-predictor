@@ -10,8 +10,7 @@ import { CreateAnalysisDto, AnalysisResponseDto } from './dto';
 export class AiAnalysisService {
   private readonly logger = new Logger(AiAnalysisService.name);
   private readonly apiKey: string;
-  private readonly baseUrl: string;
-  private readonly model: string;
+  private readonly baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
   constructor(
     @InjectRepository(Analysis)
@@ -21,8 +20,6 @@ export class AiAnalysisService {
     private configService: ConfigService,
   ) {
     this.apiKey = this.configService.get<string>('apis.ai.key') || '';
-    this.baseUrl = this.configService.get<string>('apis.ai.baseUrl') || 'https://openrouter.ai/api/v1';
-    this.model = this.configService.get<string>('apis.ai.model') || 'deepseek/deepseek-chat';
   }
 
   async createAnalysis(dto: CreateAnalysisDto): Promise<AnalysisResponseDto> {
@@ -59,7 +56,7 @@ export class AiAnalysisService {
     analysis.content = analysisText;
     analysis.matchData = { homeTeam: match.homeTeam, awayTeam: match.awayTeam, venue: match.venue };
     analysis.weatherData = weatherData || null;
-    analysis.model = this.model;
+    analysis.model = 'gemini-2.0-flash';
     analysis.temperature = weatherData?.temperature ?? 0;
     analysis.windSpeed = weatherData?.windSpeed ?? 0;
     analysis.weatherCondition = weatherData?.conditions ?? '';
@@ -103,51 +100,85 @@ export class AiAnalysisService {
 
     try {
       const response = await axios.post(
-        `${this.baseUrl}/chat/completions`,
+        `${this.baseUrl}?key=${this.apiKey}`,
         {
-          model: this.model,
-          max_tokens: 300,
-          messages: [
+          contents: [
             {
-              role: 'system',
-              content: 'You are a football analyst expert. Provide brief, insightful match predictions based on weather conditions and team context. Keep responses under 150 words.',
-            },
-            {
-              role: 'user',
-              content: prompt,
+              parts: [
+                {
+                  text: prompt,
+                },
+              ],
             },
           ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 300,
+          },
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
           },
         },
       );
 
-      return response.data.choices[0]?.message?.content || this.getMockAnalysis(match, weatherData);
+      const generatedText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      return generatedText || this.getMockAnalysis(match, weatherData)
     } catch (error) {
-      this.logger.error(`AI API error: ${error.message}`);
+      this.logger.error(`Gemini API error: ${error.message}`);
       return this.getMockAnalysis(match, weatherData);
     }
   }
 
   private buildPrompt(match: Match, weatherData?: any): string {
-    let prompt = `Analyze this football match:\n`;
-    prompt += `Match: ${match.homeTeam} vs ${match.awayTeam}\n`;
-    prompt += `Venue: ${match.venue || 'Unknown'}\n`;
-    prompt += `Date: ${match.dateEvent}\n`;
+    const matchDate = new Date(match.dateEvent);
+    const now = new Date();
+    const isPastMatch = matchDate < now;
 
-    if (weatherData) {
-      prompt += `\nWeather Conditions:\n`;
-      prompt += `- Temperature: ${weatherData.temperature}°C\n`;
-      prompt += `- Wind: ${weatherData.windSpeed} km/h\n`;
-      prompt += `- Humidity: ${weatherData.humidity}%\n`;
-      prompt += `- Conditions: ${weatherData.conditions}\n`;
+    let prompt = '';
+
+    if (isPastMatch) {
+      prompt = `You are a football analyst. Generate a BRIEF retrospective match analysis in Spanish (maximum 100 words).
+
+Format your response EXACTLY like this example:
+"Análisis del Partido: Team A X - X Team B
+Con condiciones climáticas de X°C y viento de X km/h, el partido se desarrolló de manera [descripción]. [Team ganador] dominó gracias a [razón]. El clima [favoreció/dificultó] el juego técnico. Los goles llegaron por [descripción breve]. Partido [intenso/tranquilo] que confirma [conclusión]."
+
+Match: ${match.homeTeam} ${match.homeScore || '?'} - ${match.awayScore || '?'} ${match.awayTeam}
+Venue: ${match.venue || 'Unknown'}
+Date: ${match.dateEvent}
+Status: ${match.status || 'Finished'}`;
+    } else {
+      prompt = `You are a football analyst. Generate a BRIEF match prediction in Spanish (maximum 100 words).
+
+Format your response EXACTLY like this example:
+"Análisis del Partido: Team A vs Team B
+Basado en las condiciones climáticas, se espera un partido competitivo. La temperatura de X°C y viento de X km/h favorecen un juego técnico. [Team] podría tener ventaja por [reason]. El clima es ideal/difícil para el rendimiento físico. El viento puede afectar pases largos."
+
+Match: ${match.homeTeam} vs ${match.awayTeam}
+Venue: ${match.venue || 'Unknown'}
+Date: ${match.dateEvent}`;
     }
 
-    prompt += `\nProvide a brief analysis of how weather might affect the game and any tactical advantages.`;
+    if (weatherData) {
+      prompt += `
+
+Weather:
+- Temperature: ${weatherData.temperature}°C
+- Wind: ${weatherData.windSpeed} km/h
+- Humidity: ${weatherData.humidity}%
+- Conditions: ${weatherData.conditions}`;
+    }
+
+    prompt += `
+
+IMPORTANT:
+- Response must be in SPANISH
+- Maximum 100 words
+- Be direct and concise
+- ${isPastMatch ? 'Analyze what happened based on the score and conditions' : 'Focus on how weather affects the upcoming match'}
+- ${isPastMatch ? 'Give insights on the result' : 'Give a tactical prediction'}`;
 
     return prompt;
   }

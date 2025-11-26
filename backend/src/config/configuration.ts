@@ -1,7 +1,7 @@
 export default () => ({
   port: parseInt(process.env.PORT || '3000', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
-  
+
   database: {
     host: process.env.DATABASE_HOST || 'localhost',
     port: parseInt(process.env.DATABASE_PORT || '5432', 10),
@@ -9,7 +9,7 @@ export default () => ({
     password: process.env.DATABASE_PASSWORD || 'password123',
     database: process.env.DATABASE_NAME || 'football_app',
   },
-  
+
   apis: {
     sports: {
       key: process.env.SPORTS_API_KEY || '3',
@@ -21,16 +21,16 @@ export default () => ({
     },
     ai: {
       key: process.env.AI_API_KEY || '',
-      model: process.env.AI_MODEL || 'deepseek/deepseek-chat',
-      baseUrl: process.env.AI_BASE_URL || 'https://openrouter.ai/api/v1',
+      model: 'gemini-2.0-flash',
+      baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
     },
   },
-  
+
   jwt: {
     secret: process.env.JWT_SECRET || 'dev-secret-key-change-in-production',
     expiresIn: process.env.JWT_EXPIRATION || '24h',
   },
-  
+
   cors: {
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   },

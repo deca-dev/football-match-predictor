@@ -3,25 +3,26 @@ import { Button } from '@/components/ui/button';
 
 const slides = [
   {
-    title: 'AI-Powered Match Predictions',
-    description: 'Get intelligent predictions based on team performance, weather conditions, and historical data.',
-    icon: '🤖',
-  },
-  {
-    title: 'Real-Time Weather Analysis',
-    description: 'See how weather conditions like wind, rain, and temperature can affect match outcomes.',
-    icon: '🌤️',
-  },
-  {
-    title: 'La Liga & MLS Coverage',
-    description: 'Complete coverage of Spanish La Liga and American MLS leagues with live updates.',
-    icon: '⚽',
-  },
-  {
-    title: 'Detailed Match Statistics',
-    description: 'Access comprehensive stats, team lineups, and head-to-head records for every match.',
-    icon: '📊',
-  },
+  title: 'Predicciones de Partidos con IA',
+  description: 'Obtén predicciones inteligentes basadas en el rendimiento de los equipos, las condiciones climáticas y datos históricos.',
+  icon: '🤖',
+},
+{
+  title: 'Análisis Meteorológico en Tiempo Real',
+  description: 'Descubre cómo las condiciones del clima como viento, lluvia y temperatura pueden afectar los resultados del partido.',
+  icon: '🌤️',
+},
+{
+  title: 'Cobertura de La Liga y la MLS',
+  description: 'Cobertura completa de la Liga Española y la MLS estadounidense con actualizaciones en vivo.',
+  icon: '⚽',
+},
+{
+  title: 'Estadísticas Detalladas del Partido',
+  description: 'Accede a estadísticas completas, alineaciones y registros cara a cara de cada partido.',
+  icon: '📊',
+},
+
 ];
 
 function AnimatedCounter({ target, suffix = '', duration = 2000 }: { target: number; suffix?: string; duration?: number }) {
@@ -93,7 +94,7 @@ export function Hero() {
             {/* CTA Buttons */}
             <div className="flex gap-4 pt-4">
               <Button size="lg" className="bg-red-600 hover:bg-red-700 z-10">
-                Ver Partido
+                Ver Partidos
               </Button>
               <Button size="lg" variant="outline" className="bg-black border-white text-white hover:bg-gray-900 hover:text-white z-10">
                 Más Info
@@ -107,23 +108,23 @@ export function Hero() {
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={500} suffix="+" />
               </p>
-              <p className="text-sm text-gray-300">Matches Analyzed</p>
+              <p className="text-sm text-gray-300">Partidos Analizados</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={95} suffix="%" />
               </p>
-              <p className="text-sm text-gray-300">Accuracy Rate</p>
+              <p className="text-sm text-gray-300">Tasa de Precisión</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={2} duration={1000} />
               </p>
-              <p className="text-sm text-gray-300">Leagues</p>
+              <p className="text-sm text-gray-300">Ligas</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">24/7</p>
-              <p className="text-sm text-gray-300">Live Updates</p>
+              <p className="text-sm text-gray-300">Actualizaciones en vivo</p>
             </div>
           </div>
         </div>

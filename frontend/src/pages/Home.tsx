@@ -50,13 +50,13 @@ export function Home() {
                 {/* Welcome Message */}
                 {showWelcome && (
                     <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6 border border-green-200 animate-pulse">
-                        Welcome back, <strong>{userName}</strong>! 🎉
+                        Bienvenido, <strong>{userName}</strong>! 🎉
                     </div>
                 )}
 
                 {/* Section Title */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Upcoming Matches</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Partidos a continuación</h2>
                 </div>
 
                 {/* League Tabs */}
@@ -112,8 +112,8 @@ export function Home() {
             <footer className="bg-black text-white py-8 mt-12">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-gray-400">
-                        MatchPredictor.mx es operado por TECNOLOGÍA EN ENTRETENIMIENTO CALIPLAY, S.A.P.I. DE C.V., una compañía registrada en México, autorizada y regulada por la Secretaría de Gobernación - Dirección de Juegos y Sorteos- República Mexicana.
-                        (SEGOB DGG/SP/101/65). 2025 MatchPredictor.mx. Todos los Derechos Reservados. DIVIÉRTETE RESPONSABLEMENTE. LOS JUEGOS CON APUESTA ESTAN PROHIBIDOS PARA MENORES DE EDAD.
+                        MatchPredictor.mx es operado bajo los permisos de King Tide S.A.P.I. de C.V., una compañía registrada en México y autorizada y regulada por la Secretaría de Gobernación – Dirección de Juegos y Sorteos – República Mexicana. (SEGOB DGG/SP/101/65).
+© 2025 MatchPredictor.mx. Todos los Derechos Reservados. DIVIÉRTETE RESPONSABLEMENTE. LOS JUEGOS CON APUESTA ESTÁN PROHIBIDOS PARA MENORES DE EDAD.
                     </p>
                 </div>
             </footer>

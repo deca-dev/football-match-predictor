@@ -58,6 +58,9 @@ export const matchesApi = {
   
   getOne: (id: string) => 
     api.get<Match>(`/matches/${id}`),
+
+  getDetails: (id: string) =>
+    api.get<any>(`/matches/${id}/details`),
 };
 
 export const weatherApi = {
