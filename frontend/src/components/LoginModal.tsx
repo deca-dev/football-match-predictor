@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuthStore } from "@/store/authStore";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -10,23 +11,40 @@ interface LoginModalProps {
   onRegister: (email: string, password: string, name: string) => void;
 }
 
-export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalProps) {
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [registerName, setRegisterName] = useState('');
-  const [registerEmail, setRegisterEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
+export function LoginModal({
+  isOpen,
+  onClose,
+  onLogin,
+  onRegister,
+}: LoginModalProps) {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+
+  const { login, register, isLoading, error } = useAuthStore();
 
   if (!isOpen) return null;
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(loginEmail, loginPassword);
+    const success = await login(loginEmail, loginPassword);
+    if (success) {
+      onLogin(loginEmail, loginPassword);
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    onRegister(registerEmail, registerPassword, registerName);
+    const success = await register(
+      registerEmail,
+      registerPassword,
+      registerName
+    );
+    if (success) {
+      onRegister(registerEmail, registerPassword, registerName);
+    }
   };
 
   return (
@@ -37,7 +55,12 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
             <CardTitle className="flex items-center gap-2">
               <span>⚽</span> MatchPredictor
             </CardTitle>
-            <Button variant="ghost" size="sm" className="text-white hover:text-red-500" onClick={onClose}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:text-red-500"
+              onClick={onClose}
+            >
               ✕
             </Button>
           </div>
@@ -45,10 +68,16 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
         <CardContent className="pt-6">
           <Tabs defaultValue="login">
             <TabsList className="grid w-full grid-cols-2 mb-4 bg-gray-100">
-              <TabsTrigger value="login" className="data-[state=active]:bg-black data-[state=active]:text-white">
+              <TabsTrigger
+                value="login"
+                className="data-[state=active]:bg-black data-[state=active]:text-white"
+              >
                 Login
               </TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-black data-[state=active]:text-white">
+              <TabsTrigger
+                value="register"
+                className="data-[state=active]:bg-black data-[state=active]:text-white"
+              >
                 Register
               </TabsTrigger>
             </TabsList>
@@ -56,8 +85,15 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
             {/* Login Tab */}
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
+                {error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm">
+                    {error}
+                  </div>
+                )}
                 <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={loginEmail}
@@ -68,7 +104,9 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Password</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Password
+                  </label>
                   <input
                     type="password"
                     value={loginPassword}
@@ -78,8 +116,12 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-                  Login
+                <Button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Cargando..." : "Login"}
                 </Button>
               </form>
             </TabsContent>
@@ -87,6 +129,11 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
             {/* Register Tab */}
             <TabsContent value="register">
               <form onSubmit={handleRegister} className="space-y-4">
+                {error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm">
+                    {error}
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium mb-1">Name</label>
                   <input
@@ -99,7 +146,9 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={registerEmail}
@@ -110,7 +159,9 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Password</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Password
+                  </label>
                   <input
                     type="password"
                     value={registerPassword}
@@ -120,8 +171,12 @@ export function LoginModal({ isOpen, onClose, onLogin, onRegister }: LoginModalP
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-                  Create Account
+                <Button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Cargando..." : "Create Account"}
                 </Button>
               </form>
             </TabsContent>

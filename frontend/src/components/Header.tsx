@@ -1,13 +1,19 @@
-import { Button } from '@/components/ui/button';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface HeaderProps {
   onLoginClick?: () => void;
   isLoggedIn?: boolean;
   userName?: string;
+  onLogout?: () => void;
 }
 
-export function Header({ onLoginClick, isLoggedIn, userName }: HeaderProps) {
+export function Header({
+  onLoginClick,
+  isLoggedIn,
+  userName,
+  onLogout,
+}: HeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,21 +30,29 @@ export function Header({ onLoginClick, isLoggedIn, userName }: HeaderProps) {
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <span
-              onClick={() => navigate('/')}
-              className={`cursor-pointer hover:text-red-500 transition ${location.pathname === '/' ? 'text-red-500' : ''}`}
+              onClick={() => navigate("/")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                location.pathname === "/" ? "text-red-500" : ""
+              }`}
             >
               Inicio
             </span>
             {isLoggedIn && (
               <span
-                onClick={() => navigate('/dashboard')}
-                className={`cursor-pointer hover:text-red-500 transition ${location.pathname === '/dashboard' ? 'text-red-500' : ''}`}
+                onClick={() => navigate("/dashboard")}
+                className={`cursor-pointer hover:text-red-500 transition ${
+                  location.pathname === "/dashboard" ? "text-red-500" : ""
+                }`}
               >
                 Dashboard
               </span>
             )}
-            <span className="cursor-pointer hover:text-red-500 transition">Partidos</span>
-            <span className="cursor-pointer hover:text-red-500 transition">Predicciones</span>
+            <span className="cursor-pointer hover:text-red-500 transition">
+              Partidos
+            </span>
+            <span className="cursor-pointer hover:text-red-500 transition">
+              Predicciones
+            </span>
           </nav>
 
           {/* Auth Buttons */}
@@ -48,17 +62,31 @@ export function Header({ onLoginClick, isLoggedIn, userName }: HeaderProps) {
                 <span className="text-sm text-gray-300">Hola, {userName}</span>
                 <Button
                   className="bg-red-600 hover:bg-red-700"
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate("/dashboard")}
                 >
                   Mi Dashboard
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="text-white hover:text-red-500"
+                  onClick={onLogout}
+                >
+                  Salir
                 </Button>
               </>
             ) : (
               <>
-                <Button variant="ghost" className="text-white hover:text-red-500" onClick={onLoginClick}>
+                <Button
+                  variant="ghost"
+                  className="text-white hover:text-red-500"
+                  onClick={onLoginClick}
+                >
                   Login
                 </Button>
-                <Button className="bg-red-600 hover:bg-red-700" onClick={onLoginClick}>
+                <Button
+                  className="bg-red-600 hover:bg-red-700"
+                  onClick={onLoginClick}
+                >
                   Registro
                 </Button>
               </>

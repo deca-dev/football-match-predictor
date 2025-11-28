@@ -76,4 +76,39 @@ export const analysisApi = {
     api.get<Analysis>(`/ai-analysis/${matchId}`),
 };
 
+export const authApi = {
+  register: (email: string, password: string, name: string) =>
+    api.post('/auth/register', { email, password, name }),
+
+  login: (email: string, password: string) =>
+    api.post('/auth/login', { email, password }),
+};
+
+export const favoritesApi = {
+  getAll: (token: string) =>
+    api.get('/favorites', {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  add: (token: string, teamName: string, teamBadge: string, league: string) =>
+    api.post('/favorites', { teamName, teamBadge, league }, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  remove: (token: string, teamName: string) =>
+    api.delete(`/favorites/${encodeURIComponent(teamName)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  getNextMatch: (token: string, teamId: string) =>
+    api.get(`/favorites/${teamId}/next-match`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  getLastMatches: (token: string, teamId: string) =>
+    api.get(`/favorites/${teamId}/last-matches`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+};
+
 export default api;
