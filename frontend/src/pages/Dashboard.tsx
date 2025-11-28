@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useMatchStore } from "../store/matchStore";
 import { useAuthStore } from "../store/authStore";
 import { Header } from "../components/Header";
+import { TeamDetail } from "../components/TeamDetail";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export function Dashboard() {
     seconds: 0,
   });
   const [teamSearch, setTeamSearch] = useState("");
+  const [selectedTeam, setSelectedTeam] = useState<any>(null);
 
   // Season start date (La Liga typically starts mid-August)
   const nextSeasonStart = new Date("2026-08-14T20:00:00");
@@ -308,7 +310,8 @@ export function Dashboard() {
                     {favorites.map((team) => (
                       <div
                         key={team.teamName}
-                        className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
+                        className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition"
+                        onClick={() => setSelectedTeam(team)}
                       >
                         <div className="flex items-center gap-2">
                           {team.teamBadge && (
@@ -326,7 +329,10 @@ export function Dashboard() {
                           variant="ghost"
                           size="sm"
                           className="text-red-500 hover:text-red-700"
-                          onClick={() => removeFavorite(team.teamName)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFavorite(team.teamName);
+                          }}
                         >
                           ✕
                         </Button>
@@ -416,6 +422,12 @@ export function Dashboard() {
           </div>
         </div>
       </main>
+      {/* Team Detail Modal */}
+      <TeamDetail
+        team={selectedTeam}
+        isOpen={!!selectedTeam}
+        onClose={() => setSelectedTeam(null)}
+      />
     </div>
   );
 }
