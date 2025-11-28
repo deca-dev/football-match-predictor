@@ -50,9 +50,9 @@ export function Header({
             <span className="cursor-pointer hover:text-red-500 transition">
               Partidos
             </span>
-            <span className="cursor-pointer hover:text-red-500 transition">
+            {/* <span className="cursor-pointer hover:text-red-500 transition">
               Predicciones
-            </span>
+            </span> */}
           </nav>
 
           {/* Auth Buttons */}
