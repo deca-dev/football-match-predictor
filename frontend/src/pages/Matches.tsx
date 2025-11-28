@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Header } from "../components/Header";
 import { MatchDetail } from "../components/MatchDetail";
@@ -182,14 +181,13 @@ export function Matches() {
           </CardContent>
         </Card>
 
-        {/* Error State */}
         {error && (
           <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
             Error: {error}
           </div>
         )}
 
-        {/* Loading State */}
+        {/* Loading  */}
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
