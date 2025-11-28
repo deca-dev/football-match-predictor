@@ -12,14 +12,14 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 @Module({
   imports: [
     // env variables configuration
-   ConfigModule.forRoot({
+    ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
       envFilePath: '.env',
     }),
-    
+
     // TypeORM Configuration
-   TypeOrmModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -30,11 +30,11 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
         password: configService.get<string>('database.password', 'password123'),
         database: configService.get<string>('database.database', 'futbol_app'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get<string>('nodeEnv') === 'development',
+        synchronize: true,
         logging: configService.get<string>('nodeEnv') === 'development',
       }),
     }),
-    
+
     // Application Modules
     DatabaseModule,
     MatchesModule,
