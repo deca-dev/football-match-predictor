@@ -1,0 +1,1 @@
+export { AddFavoriteDto } from './add-favorite.dto';

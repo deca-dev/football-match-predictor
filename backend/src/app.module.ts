@@ -7,6 +7,7 @@ import { WeatherModule } from './modules/weather/weather.module';
 import { AiAnalysisModule } from './modules/ai-analysis/ai-analysis.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AuthModule } from './modules/auth/auth.module';
     WeatherModule,
     AiAnalysisModule,
     AuthModule,
+    FavoritesModule,
   ],
 })
 export class AppModule {}
