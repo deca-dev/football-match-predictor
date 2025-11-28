@@ -10,6 +10,12 @@ Aplicación Full Stack para predicción de partidos de fútbol con análisis de 
 - **APIs:** TheSportsDB, OpenWeatherMap
 - **DevOps:** Docker, GitHub Actions, DigitalOcean
 
+## 🌐 Demo en Producción
+
+- **Frontend:** http://18.220.67.144
+- **API:** http://18.220.67.144:3000/api
+
+
 
 ## 🏃‍♂️ Quick Start
 
@@ -76,20 +82,20 @@ docker-compose up --build
 - Frontend: http://localhost
 - Backend: http://localhost:3000/api
 
-## ☁️ Despliegue en DigitalOcean
+## ☁️ Despliegue en AWS EC2
 
-### 1. Crear Droplet
-- Ubuntu 22.04/24.04
-- Mínimo 1GB RAM / 1 CPU
-- Habilitar IPv4
+### 1. Crear EC2 Instance
+- Ubuntu 24.04 LTS
+- t3.micro (Free Tier)
+- Security Groups: SSH (22), HTTP (80), HTTPS (443), Custom TCP (3000)
 
 ### 2. Configurar servidor
 ```bash
 # SSH al servidor
-ssh root@YOUR_DROPLET_IP
+ssh -i ~/.ssh/football-key.pem ubuntu@YOUR_EC2_IP
 
 # Descargar y ejecutar script de setup
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/football-match-predictor/main/scripts/server-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/deca-dev/football-match-predictor/main/scripts/server-setup.sh | bash
 ```
 
 ### 3. Configurar variables
@@ -104,7 +110,7 @@ En tu repositorio GitHub, ir a Settings > Secrets > Actions y agregar:
 
 | Secret | Descripción |
 |--------|-------------|
-| `DO_HOST` | IP de tu Droplet |
+| `DO_HOST` | IP  |
 | `DO_USERNAME` | `root` |
 | `DO_SSH_KEY` | Tu llave SSH privada |
 
