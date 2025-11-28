@@ -5,15 +5,20 @@ services:
     image: postgres:15-alpine
     container_name: football_postgres
     environment:
-      POSTGRES_DB: ${DATABASE_NAME:-football_app}
       POSTGRES_USER: ${DATABASE_USER:-admin}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password123}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME:-football_app}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - football_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d football_app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -21,43 +26,43 @@ services:
       dockerfile: Dockerfile
     container_name: football_backend
     environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_USER=${DATABASE_USER:-admin}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-password123}
-      - DATABASE_NAME=${DATABASE_NAME:-football_app}
-      - PORT=3000
-      - NODE_ENV=${NODE_ENV:-development}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER:-admin}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME:-football_app}
+      SPORTS_API_KEY: ${SPORTS_API_KEY:-3}
+      WEATHER_API_KEY: ${WEATHER_API_KEY}
+      AI_API_KEY: ${AI_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: production
+      PORT: 3000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+      postgres:
+        condition: service_healthy
     networks:
       - football_network
-    command: npm run start:dev
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: football_frontend
-    environment:
-      - VITE_API_BASE_URL=http://localhost:3000
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "80:80"
+    depends_on:
+      - backend
     networks:
       - football_network
-    command: npm run dev -- --host
-
-volumes:
-  postgres_data:
+    restart: unless-stopped
 
 networks:
   football_network:
     driver: bridge
+
+volumes:
+  postgres_data:
