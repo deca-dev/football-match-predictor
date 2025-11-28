@@ -22,7 +22,10 @@ export function Header({
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
+            onClick={() => navigate("/")}
+          >
             <span className="text-2xl">⚽</span>
             <span className="text-xl font-bold">Match Predictor</span>
           </div>
@@ -47,7 +50,12 @@ export function Header({
                 Dashboard
               </span>
             )}
-            <span className="cursor-pointer hover:text-red-500 transition">
+            <span
+              onClick={() => navigate("/partidos")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                location.pathname === "/partidos" ? "text-red-500" : ""
+              }`}
+            >
               Partidos
             </span>
             {/* <span className="cursor-pointer hover:text-red-500 transition">

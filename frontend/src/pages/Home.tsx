@@ -124,7 +124,7 @@ export function Home() {
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
             MatchPredictor.mx es operado bajo los permisos de King Tide S.A.P.I.
-            de C.V., una compañía registrada en México y autorizada y regulada
+            de C.V. & David S.A. de C.V., una compañía registrada en México y autorizada y regulada
             por la Secretaría de Gobernación – Dirección de Juegos y Sorteos –
             República Mexicana. (SEGOB DGG/SP/101/65). © 2025 MatchPredictor.mx.
             Todos los Derechos Reservados. DIVIÉRTETE RESPONSABLEMENTE. LOS

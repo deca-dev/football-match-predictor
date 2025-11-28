@@ -24,6 +24,7 @@ export function Dashboard() {
     minutes: 0,
     seconds: 0,
   });
+  const [teamSearch, setTeamSearch] = useState("");
 
   // Season start date (La Liga typically starts mid-August)
   const nextSeasonStart = new Date("2026-08-14T20:00:00");
@@ -362,31 +363,53 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
+                {/* Search Input */}
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="🔍 Buscar equipo..."
+                    value={teamSearch}
+                    onChange={(e) => setTeamSearch(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  />
+                </div>
+
                 <div className="max-h-64 overflow-y-auto space-y-2">
-                  {allTeams.map((team) => (
-                    <div
-                      key={team.name}
-                      className={`flex items-center justify-between p-2 rounded-lg cursor-pointer transition ${
-                        isFavorite(team.name)
-                          ? "bg-red-50"
-                          : "bg-gray-50 hover:bg-gray-100"
-                      }`}
-                      onClick={() =>
-                        !isFavorite(team.name) &&
-                        addFavorite(team.name, team.badge, team.league)
-                      }
-                    >
-                      <div className="flex items-center gap-2">
-                        {team.badge && (
-                          <img src={team.badge} alt="" className="w-6 h-6" />
+                  {allTeams
+                    .filter((team) =>
+                      team.name.toLowerCase().includes(teamSearch.toLowerCase())
+                    )
+                    .map((team) => (
+                      <div
+                        key={team.name}
+                        className={`flex items-center justify-between p-2 rounded-lg cursor-pointer transition ${
+                          isFavorite(team.name)
+                            ? "bg-red-50"
+                            : "bg-gray-50 hover:bg-gray-100"
+                        }`}
+                        onClick={() =>
+                          !isFavorite(team.name) &&
+                          addFavorite(team.name, team.badge, team.league)
+                        }
+                      >
+                        <div className="flex items-center gap-2">
+                          {team.badge && (
+                            <img src={team.badge} alt="" className="w-6 h-6" />
+                          )}
+                          <span className="text-sm">{team.name}</span>
+                        </div>
+                        {isFavorite(team.name) && (
+                          <span className="text-red-500">⭐</span>
                         )}
-                        <span className="text-sm">{team.name}</span>
                       </div>
-                      {isFavorite(team.name) && (
-                        <span className="text-red-500">⭐</span>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  {allTeams.filter((team) =>
+                    team.name.toLowerCase().includes(teamSearch.toLowerCase())
+                  ).length === 0 && (
+                    <p className="text-gray-500 text-sm text-center py-2">
+                      No se encontraron equipos
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
