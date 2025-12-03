@@ -59,14 +59,14 @@ export function Home() {
         {/* Welcome Message */}
         {showWelcome && user && (
           <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6 border border-green-200 animate-pulse">
-            Bienvenido, <strong>{user.name}</strong>! 🎉
+            Welcome, <strong>{user.name}</strong>! 🎉
           </div>
         )}
 
         {/* Section Title */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">
-            Partidos a continuación
+            Coming up matches
           </h2>
         </div>
 
@@ -123,16 +123,15 @@ export function Home() {
       <footer className="bg-black text-white py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
-            MatchPredictor.mx es operado bajo los permisos de King Tide S.A.P.I.
-            de C.V. & David S.A. de C.V., una compañía registrada en México y autorizada y regulada
-            por la Secretaría de Gobernación – Dirección de Juegos y Sorteos –
-            República Mexicana. (SEGOB DGG/SP/101/65). © 2025 MatchPredictor.mx.
-            Todos los Derechos Reservados. DIVIÉRTETE RESPONSABLEMENTE. LOS
-            JUEGOS CON APUESTA ESTÁN PROHIBIDOS PARA MENORES DE EDAD.
+            MatchPredictor.mx is operated under the permits of David S.A. de
+            C.V., a company registered in Mexico and authorized and regulated by
+            the Ministry of the Interior – Directorate of Games and Draws –
+            United Mexican States (SEGOB DGG/SP/101/65). © 2025
+            MatchPredictor.mx. All Rights Reserved. PLAY RESPONSIBLY. GAMBLING
+            IS PROHIBITED FOR MINORS.
           </p>
         </div>
       </footer>
-
       {/* Modals */}
       {selectedMatch && <MatchDetail />}
       <LoginModal

@@ -19,10 +19,10 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
       <CardContent className="p-4">
         <div className="flex justify-between items-center mb-2">
           <Badge variant={isFinished ? 'secondary' : 'default'}>
-            {isFinished ? 'Finalizó' : 'A continuación'}
+            {isFinished ? 'Finished' : 'Up Next'}
           </Badge>
           <span className="text-sm text-gray-500">
-            {matchDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
+            {matchDate.toLocaleDateString('en-CA', { day: '2-digit', month: 'short', year: 'numeric' })}
           </span>
         </div>
 

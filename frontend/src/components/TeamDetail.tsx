@@ -103,19 +103,19 @@ export function TeamDetail({ team, isOpen, onClose }: TeamDetailProps) {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {team.stadium && (
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-xs text-gray-500">🏟️ Estadio</p>
+                <p className="text-xs text-gray-500">🏟️ Stadium</p>
                 <p className="font-semibold text-sm">{team.stadium}</p>
               </div>
             )}
             {team.stadiumCapacity && (
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-xs text-gray-500">👥 Capacidad</p>
+                <p className="text-xs text-gray-500">👥 Capacity</p>
                 <p className="font-semibold text-sm">{Number(team.stadiumCapacity).toLocaleString()}</p>
               </div>
             )}
             {team.foundedYear && (
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-xs text-gray-500">📅 Fundado</p>
+                <p className="text-xs text-gray-500">📅 Founded</p>
                 <p className="font-semibold text-sm">{team.foundedYear}</p>
               </div>
             )}
@@ -124,7 +124,7 @@ export function TeamDetail({ team, isOpen, onClose }: TeamDetailProps) {
           {/* Description */}
           {team.teamDescription && (
             <div>
-              <h3 className="font-semibold mb-2">📖 Sobre el equipo</h3>
+              <h3 className="font-semibold mb-2">📖 About the team</h3>
               <p className="text-sm text-gray-600 line-clamp-4">
                 {team.teamDescription}
               </p>
@@ -134,7 +134,7 @@ export function TeamDetail({ team, isOpen, onClose }: TeamDetailProps) {
           {/* Social Media */}
           {(team.website || team.twitter || team.instagram || team.facebook) && (
             <div>
-              <h3 className="font-semibold mb-2">🌐 Redes Sociales</h3>
+              <h3 className="font-semibold mb-2">🌐 Social Media</h3>
               <div className="flex flex-wrap gap-2">
                 {team.website && (
                   <a 
@@ -182,10 +182,10 @@ export function TeamDetail({ team, isOpen, onClose }: TeamDetailProps) {
 
           {/* Next Match */}
           {loading ? (
-            <div className="text-center py-4 text-gray-500">Cargando partidos...</div>
+            <div className="text-center py-4 text-gray-500">Loading Matches...</div>
           ) : nextMatch && (
             <div>
-              <h3 className="font-semibold mb-2">🔜 Próximo Partido</h3>
+              <h3 className="font-semibold mb-2">🔜 Next Match</h3>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ export function TeamDetail({ team, isOpen, onClose }: TeamDetailProps) {
           {/* Last Matches */}
           {!loading && lastMatches.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-2">📊 Últimos Resultados</h3>
+              <h3 className="font-semibold mb-2">📊 Latest Results</h3>
               <div className="space-y-2">
                 {lastMatches.slice(0, 5).map((match: any, index: number) => (
                   <div key={index} className="bg-gray-50 p-3 rounded-lg flex items-center justify-between">

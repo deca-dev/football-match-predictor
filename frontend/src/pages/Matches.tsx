@@ -76,9 +76,9 @@ export function Matches() {
   }, {});
 
   const formatDate = (dateStr: string) => {
-    if (dateStr === "Sin fecha") return dateStr;
+    if (dateStr === "No date") return dateStr;
     const date = new Date(dateStr);
-    return date.toLocaleDateString("es-ES", {
+    return date.toLocaleDateString("en-CA", {
       weekday: "long",
       day: "numeric",
       month: "long",
@@ -99,10 +99,10 @@ export function Matches() {
         {/* Page Title */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            ⚽ Todos los Partidos
+            ⚽ Al Matches
           </h1>
           <p className="text-gray-600">
-            Busca y explora partidos de La Liga y MLS
+            Look up and explore matches from La Liga and MLS
           </p>
         </div>
 
@@ -113,11 +113,11 @@ export function Matches() {
               {/* Search Input */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium mb-1">
-                  🔍 Buscar
+                  🔍 Search
                 </label>
                 <input
                   type="text"
-                  placeholder="Buscar por equipo o estadio..."
+                  placeholder="Search by team or stadium..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -127,7 +127,7 @@ export function Matches() {
               {/* League Filter */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  🏆 Liga
+                  🏆 League
                 </label>
                 <select
                   value={selectedLeague}
@@ -138,7 +138,7 @@ export function Matches() {
                   }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
-                  <option value="all">Todas las Ligas</option>
+                  <option value="all">All Leagues</option>
                   <option value="spanish">🇪🇸 La Liga</option>
                   <option value="mls">🇺🇸 MLS</option>
                 </select>
@@ -147,7 +147,7 @@ export function Matches() {
               {/* Date Filter */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  📅 Fecha
+                  📅 Date
                 </label>
                 <input
                   type="date"
@@ -162,7 +162,7 @@ export function Matches() {
             {(searchTerm || selectedLeague !== "all" || dateFilter) && (
               <div className="mt-4 flex items-center gap-2">
                 <span className="text-sm text-gray-500">
-                  {sortedMatches.length} resultados encontrados
+                  {sortedMatches.length} results
                 </span>
                 <Button
                   variant="ghost"
@@ -174,7 +174,7 @@ export function Matches() {
                     setDateFilter("");
                   }}
                 >
-                  ✕ Limpiar filtros
+                  ✕ Remove filters
                 </Button>
               </div>
             )}
@@ -223,9 +223,9 @@ export function Matches() {
         {/* Empty State */}
         {!loading && sortedMatches.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No se encontraron partidos</p>
+            <p className="text-gray-500 text-lg">No matches found</p>
             <p className="text-gray-400">
-              Intenta con otros filtros de búsqueda
+              Try with another search term or reset the filters.
             </p>
           </div>
         )}

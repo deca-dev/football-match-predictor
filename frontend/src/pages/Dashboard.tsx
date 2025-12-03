@@ -117,7 +117,7 @@ export function Dashboard() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">🏠 Dashboard</h1>
-          <p className="text-gray-600">Bienvenido de vuelta, {user?.name}</p>
+          <p className="text-gray-600">Welcome back, {user?.name}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -127,7 +127,7 @@ export function Dashboard() {
             <Card className="bg-black text-white">
               <CardHeader>
                 <CardTitle className="text-red-500">
-                  ⏳ Próxima Temporada 2026/27
+                  ⏳ Next Season 2026/27
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -136,25 +136,25 @@ export function Dashboard() {
                     <p className="text-3xl font-bold text-red-500">
                       {countdown.days}
                     </p>
-                    <p className="text-sm text-gray-400">Días</p>
+                    <p className="text-sm text-gray-400">Days</p>
                   </div>
                   <div className="bg-gray-900 p-4 rounded-lg">
                     <p className="text-3xl font-bold text-red-500">
                       {countdown.hours}
                     </p>
-                    <p className="text-sm text-gray-400">Horas</p>
+                    <p className="text-sm text-gray-400">Hours</p>
                   </div>
                   <div className="bg-gray-900 p-4 rounded-lg">
                     <p className="text-3xl font-bold text-red-500">
                       {countdown.minutes}
                     </p>
-                    <p className="text-sm text-gray-400">Minutos</p>
+                    <p className="text-sm text-gray-400">Minutes</p>
                   </div>
                   <div className="bg-gray-900 p-4 rounded-lg">
                     <p className="text-3xl font-bold text-red-500">
                       {countdown.seconds}
                     </p>
-                    <p className="text-sm text-gray-400">Segundos</p>
+                    <p className="text-sm text-gray-400">Seconds</p>
                   </div>
                 </div>
               </CardContent>
@@ -164,7 +164,7 @@ export function Dashboard() {
             {nextMatch && (
               <Card>
                 <CardHeader>
-                  <CardTitle>🔜 Próximo Partido</CardTitle>
+                  <CardTitle>🔜 Next Match</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
@@ -182,7 +182,7 @@ export function Dashboard() {
                       <p className="text-2xl font-bold">VS</p>
                       <p className="text-sm text-gray-500">
                         {new Date(nextMatch.dateEvent).toLocaleDateString(
-                          "es-ES",
+                          "en-CA",
                           {
                             day: "2-digit",
                             month: "short",
@@ -213,7 +213,7 @@ export function Dashboard() {
             {favoriteMatches.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle>⭐ Partidos de Mis Equipos</CardTitle>
+                  <CardTitle>⭐ Matches of my Teams</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -265,7 +265,7 @@ export function Dashboard() {
                   <p className="text-3xl font-bold text-red-500">
                     {matches.length}
                   </p>
-                  <p className="text-sm text-gray-500">Partidos Totales</p>
+                  <p className="text-sm text-gray-500">Total Matches</p>
                 </CardContent>
               </Card>
               <Card>
@@ -273,7 +273,7 @@ export function Dashboard() {
                   <p className="text-3xl font-bold text-red-500">
                     {upcomingMatches.length}
                   </p>
-                  <p className="text-sm text-gray-500">Por Jugar</p>
+                  <p className="text-sm text-gray-500">About to play</p>
                 </CardContent>
               </Card>
               <Card>
@@ -281,13 +281,13 @@ export function Dashboard() {
                   <p className="text-3xl font-bold text-red-500">
                     {favorites.length}
                   </p>
-                  <p className="text-sm text-gray-500">Equipos Favoritos</p>
+                  <p className="text-sm text-gray-500">Favorite Teams</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-4 text-center">
                   <p className="text-3xl font-bold text-red-500">2</p>
-                  <p className="text-sm text-gray-500">Ligas Activas</p>
+                  <p className="text-sm text-gray-500">Active Leagues</p>
                 </CardContent>
               </Card>
             </div>
@@ -298,12 +298,12 @@ export function Dashboard() {
             {/* My Favorites */}
             <Card>
               <CardHeader>
-                <CardTitle>⭐ Mis Equipos Favoritos</CardTitle>
+                <CardTitle>⭐ My favorite teams</CardTitle>
               </CardHeader>
               <CardContent>
                 {favorites.length === 0 ? (
                   <p className="text-gray-500 text-sm text-center py-4">
-                    No tienes equipos favoritos aún
+                    You can add teams from the section below.
                   </p>
                 ) : (
                   <div className="space-y-2">
@@ -347,7 +347,7 @@ export function Dashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>➕ Agregar Equipo</span>
+                  <span>➕ Add Team</span>
                   <div className="flex gap-1">
                     <Badge
                       className={`cursor-pointer ${
@@ -373,7 +373,7 @@ export function Dashboard() {
                 <div className="mb-3">
                   <input
                     type="text"
-                    placeholder="🔍 Buscar equipo..."
+                    placeholder="🔍 Search team..."
                     value={teamSearch}
                     onChange={(e) => setTeamSearch(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
@@ -413,7 +413,7 @@ export function Dashboard() {
                     team.name.toLowerCase().includes(teamSearch.toLowerCase())
                   ).length === 0 && (
                     <p className="text-gray-500 text-sm text-center py-2">
-                      No se encontraron equipos
+                      No team found.
                     </p>
                   )}
                 </div>

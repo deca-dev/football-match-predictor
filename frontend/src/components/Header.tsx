@@ -38,7 +38,7 @@ export function Header({
                 location.pathname === "/" ? "text-red-500" : ""
               }`}
             >
-              Inicio
+              Home
             </span>
             {isLoggedIn && (
               <span
@@ -56,7 +56,7 @@ export function Header({
                 location.pathname === "/partidos" ? "text-red-500" : ""
               }`}
             >
-              Partidos
+              Matches
             </span>
             {/* <span className="cursor-pointer hover:text-red-500 transition">
               Predicciones
@@ -67,19 +67,19 @@ export function Header({
           <div className="flex items-center gap-3">
             {isLoggedIn ? (
               <>
-                <span className="text-sm text-gray-300">Hola, {userName}</span>
+                <span className="text-sm text-gray-300">Hi, {userName}</span>
                 <Button
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => navigate("/dashboard")}
                 >
-                  Mi Dashboard
+                  My Dashboard
                 </Button>
                 <Button
                   variant="ghost"
                   className="text-white hover:text-red-500"
                   onClick={onLogout}
                 >
-                  Salir
+                  Log Out
                 </Button>
               </>
             ) : (
@@ -95,7 +95,7 @@ export function Header({
                   className="bg-red-600 hover:bg-red-700"
                   onClick={onLoginClick}
                 >
-                  Registro
+                  Sign Up
                 </Button>
               </>
             )}

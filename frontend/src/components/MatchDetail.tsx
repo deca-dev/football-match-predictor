@@ -57,7 +57,7 @@ export function MatchDetail() {
 
           {/* Weather */}
           <div>
-            <h3 className="font-semibold mb-2">🌤️ Condiciones climatológicas</h3>
+            <h3 className="font-semibold mb-2">🌤️ Weather Conditions</h3>
             {weather ? (
               <div className="flex gap-2 flex-wrap">
                 <Badge variant="outline">{weather.temperature}°C</Badge>
@@ -73,10 +73,10 @@ export function MatchDetail() {
           {/* AI Analysis */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <h3 className="font-semibold">Análisis de IA</h3>
+              <h3 className="font-semibold">IA Analysis</h3>
               {!analysis && (
                 <Button size="sm" onClick={() => fetchAnalysis(selectedMatch.id)}>
-                  Generar análisis
+                  Generate Analysis
                 </Button>
               )}
             </div>
@@ -85,20 +85,20 @@ export function MatchDetail() {
                 <CardContent className="p-4">
                   <p className="text-sm whitespace-pre-line">{analysis.analysis}</p>
                   <p className="text-xs text-gray-500 mt-2">
-                    Modelo: {analysis.model}
+                    Model: {analysis.model}
                   </p>
                 </CardContent>
               </Card>
             ) : (
               <p className="text-sm text-gray-500">
-                Haz click en "Generar análisis" para ver la predicción de IA.
+                Click "Generate Analysis" to view AI prediction.
               </p>
             )}
           </div>
           {/* Team Stats */}
           {matchDetails && (matchDetails.homeTeamStats || matchDetails.awayTeamStats) && (
             <div>
-              <h3 className="font-semibold mb-3">📊 Información de Equipos</h3>
+              <h3 className="font-semibold mb-3">📊 Team Information </h3>
               <div className="grid grid-cols-2 gap-4">
                 {/* Home Team */}
                 {matchDetails.homeTeamStats && (
@@ -107,10 +107,10 @@ export function MatchDetail() {
                     <div className="text-xs text-gray-600 space-y-1">
                       <p>🏟️ {matchDetails.homeTeamStats.stadium}</p>
                       {matchDetails.homeTeamStats.stadiumCapacity && (
-                        <p>👥 Capacidad: {Number(matchDetails.homeTeamStats.stadiumCapacity).toLocaleString()}</p>
+                        <p>👥 Capacity: {Number(matchDetails.homeTeamStats.stadiumCapacity).toLocaleString()}</p>
                       )}
                       {matchDetails.homeTeamStats.founded && (
-                        <p>📅 Fundado: {matchDetails.homeTeamStats.founded}</p>
+                        <p>📅 Founded: {matchDetails.homeTeamStats.founded}</p>
                       )}
                     </div>
                   </div>
@@ -137,7 +137,8 @@ export function MatchDetail() {
           {/* Head to Head */}
           {matchDetails?.headToHead && matchDetails.headToHead.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-3">⚔️ Historial de enfrentamientos</h3>
+              <h3 className="font-semibold mb-3">⚔️ History of Matches
+                 </h3>
               <div className="space-y-2">
                 {matchDetails.headToHead.map((h2h: any, index: number) => (
                   <div key={index} className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">

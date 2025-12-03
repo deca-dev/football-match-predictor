@@ -1,161 +1,196 @@
 # ⚽ Soccer Match Predictor
 
-Aplicación Full Stack para predicción de partidos de fútbol con análisis de clima e IA.
+Full Stack application for predicting soccer matches with weather analysis and AI.
 
-## 🚀 Stack Tecnológico
+## 🚀 Tech Stack
 
 - **Backend:** NestJS + TypeScript + TypeORM + PostgreSQL
 - **Frontend:** React + TypeScript + Shadcn UI + Zustand
-- **IA:** Google Gemini
+- **AI:** Google Gemini
 - **APIs:** TheSportsDB, OpenWeatherMap
 - **DevOps:** Docker, GitHub Actions, DigitalOcean
 
-## 🌐 Demo en Producción
+## 🌐 Live Demo
 
 - **Frontend:** http://18.220.67.144
 - **API:** http://18.220.67.144:3000/api
 
-
+---
 
 ## 🏃‍♂️ Quick Start
 
-### Prerrequisitos
-- Node.js
-- Docker y Docker Compose
-- Git
+### Prerequisites
 
-### Instalación
+- Node.js  
+- Docker and Docker Compose  
+- Git  
 
-### 1. Clonar repositorio
+---
+
+## Installation
+
+### 1. Clone repository
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/football-match-predictor.git
 cd football-match-predictor
 ```
 
-### 2. Configurar variables de entorno
+### 2. Configure environment variables
 
 **Backend:**
+
 ```bash
 cp backend/.env.example backend/.env
-# Editar backend/.env con tus API keys
+# Edit backend/.env with your API keys
 ```
 
 **Frontend:**
+
 ```bash
 cp frontend/.env.example frontend/.env
 ```
 
-### 3. Iniciar base de datos
+### 3. Start database
+
 ```bash
 docker-compose up -d postgres
 ```
 
-### 4. Iniciar backend
+### 4. Start backend
+
 ```bash
 cd backend
 npm install
 npm run start:dev
 ```
 
-### 5. Iniciar frontend
+### 5. Start frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### 6. Abrir en navegador
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:3000/api
-- Swagger Docs: http://localhost:3000/docs
+### 6. Open in browser
 
-## 🐳 Docker (Producción Local)
+- Frontend: http://localhost:5173  
+- Backend API: http://localhost:3000/api  
+- Swagger Docs: http://localhost:3000/docs  
+
+---
+
+## 🐳 Docker (Local Production)
+
 ```bash
-# Crear .env en la raíz
+# Create .env at the root
 cp .env.example .env
-# Editar .env con valores reales
+# Edit .env with real values
 
-# Construir y ejecutar
+# Build and run
 docker-compose up --build
 ```
 
-- Frontend: http://localhost
-- Backend: http://localhost:3000/api
+- Frontend: http://localhost  
+- Backend: http://localhost:3000/api  
 
-## ☁️ Despliegue en AWS EC2
+---
 
-### 1. Crear EC2 Instance
-- Ubuntu 24.04 LTS
-- t3.micro (Free Tier)
-- Security Groups: SSH (22), HTTP (80), HTTPS (443), Custom TCP (3000)
+## ☁️ Deployment on AWS EC2
 
-### 2. Configurar servidor
+### 1. Create EC2 Instance
+
+- Ubuntu 24.04 LTS  
+- t3.micro (Free Tier)  
+- Security Groups: SSH (22), HTTP (80), HTTPS (443), Custom TCP (3000)  
+
+### 2. Configure server
+
 ```bash
-# SSH al servidor
+# SSH into the server
 ssh -i ~/.ssh/football-key.pem ubuntu@YOUR_EC2_IP
 
-# Descargar y ejecutar script de setup
+# Download and run setup script
 curl -fsSL https://raw.githubusercontent.com/deca-dev/football-match-predictor/main/scripts/server-setup.sh | bash
 ```
 
-### 3. Configurar variables
+### 3. Configure variables
+
 ```bash
 cd /opt/football-predictor
 nano .env
-# Agregar tus valores reales
+# Add your real values
 ```
 
-### 4. Configurar GitHub Secrets
-En tu repositorio GitHub, ir a Settings > Secrets > Actions y agregar:
+### 4. Configure GitHub Secrets
 
-| Secret | Descripción |
-|--------|-------------|
-| `DO_HOST` | IP  |
-| `DO_USERNAME` | `root` |
-| `DO_SSH_KEY` | Tu llave SSH privada |
+In your GitHub repository, go to:  
+**Settings > Secrets > Actions**
+
+Add:
+
+| Secret        | Description            |
+|---------------|------------------------|
+| `DO_HOST`     | IP                     |
+| `DO_USERNAME` | `root`                 |
+| `DO_SSH_KEY`  | Your private SSH key   |
 
 ### 5. Deploy
-Cada push a `main` desplegará automáticamente via GitHub Actions.
+
+Every push to `main` will automatically deploy via GitHub Actions.
+
+---
 
 ## 📡 API Endpoints
 
 ### Auth
-- `POST /api/auth/register` - Registro de usuario
-- `POST /api/auth/login` - Inicio de sesión
+
+- `POST /api/auth/register` – User registration  
+- `POST /api/auth/login` – Login  
 
 ### Matches
-- `GET /api/matches?league=spanish` - Obtener partidos
-- `GET /api/matches/:id` - Detalle de partido
-- `GET /api/matches/:id/details` - Estadísticas completas
+
+- `GET /api/matches?league=spanish` – Get matches  
+- `GET /api/matches/:id` – Match detail  
+- `GET /api/matches/:id/details` – Full statistics  
 
 ### Weather
-- `GET /api/weather?city=Madrid` - Clima por ciudad
+
+- `GET /api/weather?city=Madrid` – Weather by city  
 
 ### AI Analysis
-- `POST /api/ai-analysis` - Generar análisis
-- `GET /api/ai-analysis/:matchId` - Obtener análisis
+
+- `POST /api/ai-analysis` – Generate analysis  
+- `GET /api/ai-analysis/:matchId` – Get analysis  
 
 ### Favorites (Auth required)
-- `GET /api/favorites` - Mis favoritos
-- `POST /api/favorites` - Agregar favorito
-- `DELETE /api/favorites/:teamName` - Eliminar favorito
-- `GET /api/favorites/:teamId/next-match` - Próximo partido
-- `GET /api/favorites/:teamId/last-matches` - Últimos partidos
 
-## 🔑 Variables de Entorno
+- `GET /api/favorites` – My favorites  
+- `POST /api/favorites` – Add favorite  
+- `DELETE /api/favorites/:teamName` – Remove favorite  
+- `GET /api/favorites/:teamId/next-match` – Next match  
+- `GET /api/favorites/:teamId/last-matches` – Last matches  
 
-| Variable | Descripción | Requerida |
-|----------|-------------|-----------|
-| `DATABASE_USER` | Usuario PostgreSQL | ✅ |
-| `DATABASE_PASSWORD` | Contraseña PostgreSQL | ✅ |
-| `DATABASE_NAME` | Nombre de la base de datos | ✅ |
-| `SPORTS_API_KEY` | TheSportsDB API key (usar "3") | ✅ |
-| `WEATHER_API_KEY` | OpenWeatherMap API key | ✅ |
-| `AI_API_KEY` | Google Gemini API key | ✅ |
-| `JWT_SECRET` | Secreto para JWT (32+ caracteres) | ✅ |
-| `FRONTEND_URL` | URL del frontend para CORS | ✅ |
+---
 
-## 📁 Estructura del Proyecto
+## 🔑 Environment Variables
+
+| Variable            | Description                 | Required |
+|---------------------|-----------------------------|----------|
+| `DATABASE_USER`     | PostgreSQL user             | ✅       |
+| `DATABASE_PASSWORD` | PostgreSQL password         | ✅       |
+| `DATABASE_NAME`     | Database name               | ✅       |
+| `SPORTS_API_KEY`    | TheSportsDB API key (use "3") | ✅     |
+| `WEATHER_API_KEY`   | OpenWeatherMap API key      | ✅       |
+| `AI_API_KEY`        | Google Gemini API key       | ✅       |
+| `JWT_SECRET`        | JWT secret (32+ characters) | ✅       |
+| `FRONTEND_URL`      | Frontend URL for CORS       | ✅       |
+
+---
+
+## 📁 Project Structure
+
 ```
 football-match-predictor/
 ├── backend/
@@ -190,6 +225,8 @@ football-match-predictor/
 └── README.md
 ```
 
-## 👨‍💻 Autor
+---
 
-David - [GitHub](https://github.com/deca-dev)
+## 👨‍💻 Author
+
+David – [GitHub](https://github.com/deca-dev)

@@ -4,29 +4,30 @@ import { useNavigate } from "react-router-dom";
 
 const slides = [
   {
-    title: "Predicciones de Partidos con IA",
-    description:
-      "Obtén predicciones inteligentes basadas en el rendimiento de los equipos, las condiciones climáticas y datos históricos.",
-    icon: "🤖",
-  },
-  {
-    title: "Análisis Meteorológico en Tiempo Real",
-    description:
-      "Descubre cómo las condiciones del clima como viento, lluvia y temperatura pueden afectar los resultados del partido.",
-    icon: "🌤️",
-  },
-  {
-    title: "Cobertura de La Liga y la MLS",
-    description:
-      "Cobertura completa de la Liga Española y la MLS estadounidense con actualizaciones en vivo.",
-    icon: "⚽",
-  },
-  {
-    title: "Estadísticas Detalladas del Partido",
-    description:
-      "Accede a estadísticas completas, alineaciones y registros cara a cara de cada partido.",
-    icon: "📊",
-  },
+  title: "AI-Powered Match Predictions",
+  description:
+    "Get intelligent predictions based on team performance, weather conditions, and historical data.",
+  icon: "🤖",
+},
+{
+  title: "Real-Time Weather Analysis",
+  description:
+    "Discover how weather conditions such as wind, rain, and temperature can affect match outcomes.",
+  icon: "🌤️",
+},
+{
+  title: "La Liga and MLS Coverage",
+  description:
+    "Full coverage of the Spanish La Liga and the U.S. MLS with live updates.",
+  icon: "⚽",
+},
+{
+  title: "Detailed Match Statistics",
+  description:
+    "Access complete statistics, lineups, and head-to-head records for every match.",
+  icon: "📊",
+},
+
 ];
 
 function AnimatedCounter({
@@ -120,7 +121,7 @@ export function Hero() {
                 className="bg-red-600 hover:bg-red-700 z-10"
                 onClick={() => navigate("/partidos")}
               >
-                Ver Partidos
+                See Matches
               </Button>
               <Button
                 size="lg"
@@ -128,7 +129,7 @@ export function Hero() {
                 className="bg-black border-white text-white hover:bg-gray-900 hover:text-white z-10"
                 onClick={() => navigate("/partidos")}
               >
-                Más Info
+                More Info
               </Button>
             </div>
           </div>
@@ -139,23 +140,23 @@ export function Hero() {
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={500} suffix="+" />
               </p>
-              <p className="text-sm text-gray-300">Partidos Analizados</p>
+              <p className="text-sm text-gray-300">Analyzed Matches</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={95} suffix="%" />
               </p>
-              <p className="text-sm text-gray-300">Tasa de Precisión</p>
+              <p className="text-sm text-gray-300">Prediction Rate</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">
                 <AnimatedCounter target={2} duration={1000} />
               </p>
-              <p className="text-sm text-gray-300">Ligas</p>
+              <p className="text-sm text-gray-300">Leagues</p>
             </div>
             <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 text-center">
               <p className="text-3xl font-bold text-red-500">24/7</p>
-              <p className="text-sm text-gray-300">Actualizaciones en vivo</p>
+              <p className="text-sm text-gray-300">Live Updates</p>
             </div>
           </div>
         </div>
